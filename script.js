@@ -1,6 +1,6 @@
 // GET COMPUTER CHOICE
 function getComputerChoice() {
-  randomNumber = Math.floor(Math.random() * 3);
+  let randomNumber = Math.floor(Math.random() * 3);
   switch (randomNumber) {
     case 0:
       return "rock";
@@ -17,13 +17,10 @@ function getHumanChoice() {
   return prompt("Rock, Paper, or Scissor?");
 }
 
-function play_round() {
+function play_round(humanChoice, computerChoice) {
   let humanScore = 0;
   let computerScore = 0;
 
-  let humanChoice = getHumanChoice();
-  humanChoice = humanChoice.toLowerCase();
-  let computerChoice = getComputerChoice();
   console.log(humanChoice);
   console.log(computerChoice);
 
@@ -51,4 +48,6 @@ function play_round() {
 }
 
 // LOGS
-console.log(play_round());
+let humanChoice = getHumanChoice().toLowerCase();
+let computerChoice = getComputerChoice();
+console.log(play_round(humanChoice, computerChoice));
