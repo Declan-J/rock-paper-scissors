@@ -1,4 +1,4 @@
-// GET COMPUTER CHOICE
+// COMPUTER CHOICE
 function getComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
   switch (randomNumber) {
@@ -13,14 +13,13 @@ function getComputerChoice() {
   }
 }
 
+// HUMAN CHOICE
 function getHumanChoice() {
   return prompt("Rock, Paper, or Scissor?");
 }
 
+// PLAY A ROUND
 function play_round(humanChoice, computerChoice) {
-  let humanScore = 0;
-  let computerScore = 0;
-
   console.log(humanChoice);
   console.log(computerChoice);
 
@@ -31,7 +30,7 @@ function play_round(humanChoice, computerChoice) {
     (humanChoice === "scissors" && computerChoice === "paper")
   ) {
     console.log("Winner: Player");
-    humanScore++;
+    return "human";
 
     //CPU WINS
   } else if (
@@ -40,14 +39,36 @@ function play_round(humanChoice, computerChoice) {
     (computerChoice === "scissors" && humanChoice === "paper")
   ) {
     console.log("Winner: Computer");
-    computerScore++;
+    return "cpu";
   }
 
   // DRAW
-  else console.log("It's a Draw!");
+  else {
+    console.log("It's a Draw!");
+    return "draw";
+  }
 }
 
-// LOGS
-let humanChoice = getHumanChoice().toLowerCase();
-let computerChoice = getComputerChoice();
-console.log(play_round(humanChoice, computerChoice));
+// MAIN GAME LOOP
+function playGame() {
+  let humanScore = 0;
+  let computerScore = 0;
+  let roundsPlayed = 0;
+
+  while (roundsPlayed < 5) {
+    let humanChoice = getHumanChoice().toLowerCase();
+    let computerChoice = getComputerChoice();
+    result = play_round(humanChoice, computerChoice);
+
+    if (result === "human") humanScore++;
+    else if (result === "cpu") computerScore++;
+    roundsPlayed++;
+  }
+
+  if (humanScore > computerScore)
+    console.log("The Player wins the game! Well Done!");
+  else if (computerScore > humanScore) console.log("The Computer wins the game! Better luck next time...");
+  else console.log("The game's all tied up!")
+}
+
+playGame();
