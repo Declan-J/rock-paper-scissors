@@ -1,3 +1,14 @@
+let humanScore = 0;
+let computerScore = 0;
+let roundsPlayed = 0;
+
+const roundWinnerDiv = document.querySelector("#roundWinner");
+const scoreDiv = document.querySelector("#runningScore");
+roundsPlayedDiv = document.querySelector("#roundsPlayed");
+const finalWinnerMessageDiv = document.querySelector("#finalWinnerMessage");
+const humanChoiceDiv = document.querySelector("#humanChoice") 
+const cpuChoiceDiv = document.querySelector("#cpuChoice")
+
 // COMPUTER CHOICE
 function getComputerChoice() {
   let randomNumber = Math.floor(Math.random() * 3);
@@ -13,15 +24,20 @@ function getComputerChoice() {
   }
 }
 
-// HUMAN CHOICE
-function getHumanChoice() {
-  return prompt("Rock, Paper, or Scissor?");
-}
-
 // PLAY A ROUND
+
+// HUMAN CHOICE
+const choices = document.querySelectorAll("button")
+let result = "";
+choices.forEach((choice) => {
+  choice.addEventListener("click", () => {
+    result = play_round(choice.textContent.toLocaleLowerCase(), getComputerChoice());
+  });
+});
+
 function play_round(humanChoice, computerChoice) {
-  console.log(humanChoice);
-  console.log(computerChoice);
+  humanChoiceDiv.textContent = `Human played: ${humanChoice}`;
+  cpuChoiceDiv.textContent = `CPU played: ${computerChoice}`;
 
   // HUMAN WINS
   if (
@@ -29,8 +45,7 @@ function play_round(humanChoice, computerChoice) {
     (humanChoice === "paper" && computerChoice === "rock") ||
     (humanChoice === "scissors" && computerChoice === "paper")
   ) {
-    console.log("Winner: Player");
-    return "human";
+    checkRoundWinner("human")
 
     //CPU WINS
   } else if (
@@ -38,37 +53,56 @@ function play_round(humanChoice, computerChoice) {
     (computerChoice === "paper" && humanChoice === "rock") ||
     (computerChoice === "scissors" && humanChoice === "paper")
   ) {
-    console.log("Winner: Computer");
-    return "cpu";
+    checkRoundWinner("cpu");
   }
 
   // DRAW
   else {
-    console.log("It's a Draw!");
-    return "draw";
+    checkRoundWinner("draw");
   }
 }
 
-// MAIN GAME LOOP
-function playGame() {
-  let humanScore = 0;
-  let computerScore = 0;
-  let roundsPlayed = 0;
+// SHOW SCORE
+function showScore() {
+  roundsPlayedDiv.textContent = `Round: ${roundsPlayed}`
+  scoreDiv.textContent = `Human: ${humanScore} - CPU ${computerScore}`
+}
 
-  while (roundsPlayed < 5) {
-    let humanChoice = getHumanChoice().toLowerCase();
-    let computerChoice = getComputerChoice();
-    result = play_round(humanChoice, computerChoice);
+function checkRoundWinner(result) {
+  switch (result) {
+    case "human":
+      roundWinnerDiv.textContent = "Winner: Human";
+      humanScore++;
+      roundsPlayed++;
+      showScore();
+      break;
 
-    if (result === "human") humanScore++;
-    else if (result === "cpu") computerScore++;
-    roundsPlayed++;
+    case "cpu":
+      roundWinnerDiv.textContent = "Winner: CPU";
+      computerScore++
+      roundsPlayed++;
+      showScore();
+      break;
+
+    case "draw":
+      roundWinnerDiv.textContent = "It's a Draw!";
+      roundsPlayed++;
+      showScore();
+      break;
+
+    default:
+      break;
   }
+  if (roundsPlayed == 5)
+    checkGameWinner();
+}
 
+//CHECK WINNER
+function checkGameWinner() {
   if (humanScore > computerScore)
-    console.log("The Player wins the game! Well Done!");
-  else if (computerScore > humanScore) console.log("The Computer wins the game! Better luck next time...");
-  else console.log("The game's all tied up!")
+    finalWinnerMessageDiv.textContent = "The Player wins the game! Well Done!";
+  else if (computerScore > humanScore)
+    finalWinnerMessageDiv.textContent = "The Computer wins the game! Better luck next time...";
+  else if (humanScore === computerScore)
+    finalWinnerMessageDiv.textContent = "The game's all tied up!";
 }
-
-playGame();
