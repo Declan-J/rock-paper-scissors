@@ -1,16 +1,19 @@
+// SCORE & ROUND COUNTERS
 let humanScore = 0;
 let computerScore = 0;
 let roundsPlayed = 0;
 
+// DOM REFERENCES 
 const roundWinnerDiv = document.querySelector("#roundWinner");
 const scoreDiv = document.querySelector("#runningScore");
-roundsPlayedDiv = document.querySelector("#roundsPlayed");
+const roundsPlayedDiv = document.querySelector("#roundsPlayed");
 const finalWinnerMessageDiv = document.querySelector("#finalWinnerMessage");
-const humanChoiceDiv = document.querySelector("#humanChoice") 
+const humanChoiceDiv = document.querySelector("#humanChoice")
 const cpuChoiceDiv = document.querySelector("#cpuChoice")
 
 // COMPUTER CHOICE
 function getComputerChoice() {
+  //randomly select 1-3.
   let randomNumber = Math.floor(Math.random() * 3);
   switch (randomNumber) {
     case 0:
@@ -24,17 +27,17 @@ function getComputerChoice() {
   }
 }
 
-// PLAY A ROUND
-
 // HUMAN CHOICE
 const choices = document.querySelectorAll("button")
 let result = "";
 choices.forEach((choice) => {
+  //Plays round using the player's selected hand
   choice.addEventListener("click", () => {
     result = play_round(choice.textContent.toLocaleLowerCase(), getComputerChoice());
   });
 });
 
+// PLAY A ROUND
 function play_round(humanChoice, computerChoice) {
   humanChoiceDiv.textContent = `Human played: ${humanChoice}`;
   cpuChoiceDiv.textContent = `CPU played: ${computerChoice}`;
@@ -67,7 +70,7 @@ function showScore() {
   roundsPlayedDiv.textContent = `Round: ${roundsPlayed}`
   scoreDiv.textContent = `Human: ${humanScore} - CPU ${computerScore}`
 }
-
+// CHECK ROUND WIN
 function checkRoundWinner(result) {
   switch (result) {
     case "human":
@@ -97,7 +100,7 @@ function checkRoundWinner(result) {
     checkGameWinner();
 }
 
-//CHECK WINNER
+//CHECK GAME WINNER
 function checkGameWinner() {
   if (humanScore > computerScore)
     finalWinnerMessageDiv.textContent = "The Player wins the game! Well Done!";
